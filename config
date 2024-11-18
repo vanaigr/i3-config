@@ -154,25 +154,19 @@ bar {
 # but other applicatons still receive the event, and i3 just passes it through
 bindsym XF86PowerOff nop
 
-# yay hacks
-exec --no-startup-id sleep 1 && xmodmap "$HOME/.config/xmodmap/config"
-# touchpad tap to press
-exec --no-startup-id xinput set-prop 9 298 1
-# no tap-drag
-exec --no-startup-id xinput set-prop 9 300 0
-# slower scroll (higher value - slower)
-exec --no-startup-id xinput set-prop 9 328 40
-
-# the same as above but in the case mouse is plugged in
-exec --no-startup-id xinput set-prop 10 327 1
-exec --no-startup-id xinput set-prop 10
-exec --no-startup-id xinput set-prop 10 324 40
-
-# keyboard repeat and delay
-exec --no-startup-id xset r rate 200 30
-
-exec --no-startup-id setxkbmap -layout us,ru && setxkbmap -option 'grp:alt_shift_toggle'
 exec --no-startup-id xrdb "$HOME/.Xresources"
+exec_always --no-startup-id $HOME/.cargo/bin/xremap $HOME/.config/xremap/config.yml
+##########################################
+#                                        #
+#    DEAR X, SERVER PLEEEAASSEE DONT     #
+#    IGNORE MY OPTIONS. IF I SET         #
+#    THEM, I WANT THEM TO BE APPLIED,    #
+#    NOT IGNORED. THANK YOU.             #
+#                                        #
+##########################################
+exec_always --no-startup-id sleep 1 && xset r rate 200 30 && setxkbmap -layout us,ru && setxkbmap -option 'grp:alt_shift_toggle'
+
+exec --no-startup-id $HOME/.config/i3/input
 
 # no screen tearing
 exec --no-startup-id xrandr --output eDP --set "TearFree" on
